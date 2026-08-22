@@ -2430,6 +2430,19 @@
 	color: rgba(255, 255, 255, 0.85);
 }
 
+.hero__days-together {
+	margin-top: $spacing-sm;
+	font-size: $font-size-xs;
+	color: rgba(255, 255, 255, 0.65);
+	letter-spacing: 0.02em;
+
+	strong {
+		color: rgba(255, 255, 255, 0.9);
+		font-weight: $font-weight-bold;
+		font-size: $font-size-sm;
+	}
+}
+
 // ─── Login Modal ───────────────────────────────────────────────────────────────
 .login-overlay {
 	position: fixed;
@@ -2701,10 +2714,13 @@
 
 // ── 모바일 (≤480px) ──────────────────────────────────────────────────────────
 @media (max-width: $bp-sm) {
-
 	// 헤더 — 로고 서브 숨김, 버튼 축소
-	.header__logo-sub  { display: none; }
-	.header__logo-title { font-size: $font-size-sm; }
+	.header__logo-sub {
+		display: none;
+	}
+	.header__logo-title {
+		font-size: $font-size-sm;
+	}
 
 	.header__btn {
 		padding: 7px 13px;
@@ -2723,13 +2739,23 @@
 	}
 
 	// 히어로 MVP 통계 정렬
-	.hero__mvp-stats  { align-items: center; }
-	.hero__mvp-chips  { justify-content: center; }
-	.hero__stats      { justify-content: center; }
+	.hero__mvp-stats {
+		align-items: center;
+	}
+	.hero__mvp-chips {
+		justify-content: center;
+	}
+	.hero__stats {
+		justify-content: center;
+	}
 
 	// 디테일 — body 패딩 축소, 배너 패딩 축소
-	.detail__body   { padding: $spacing-lg; }
-	.detail .detail__banner { padding: $spacing-lg; }
+	.detail__body {
+		padding: $spacing-lg;
+	}
+	.detail .detail__banner {
+		padding: $spacing-lg;
+	}
 
 	// 디테일 — 표지 float 해제, 중앙 정렬
 	.detail__cover-wrap {
@@ -2744,26 +2770,37 @@
 	}
 
 	// 폼 단일 컬럼
-	.form__grid { grid-template-columns: 1fr; }
-	.form__field--full { grid-column: 1; }
+	.form__grid {
+		grid-template-columns: 1fr;
+	}
+	.form__field--full {
+		grid-column: 1;
+	}
 
 	// 최근 모임 카드 — 표지 숨김
-	.book-card-hero__cover-wrap { display: none; }
-	.book-card-hero__body { padding-right: $spacing-lg; }
+	.book-card-hero__cover-wrap {
+		display: none;
+	}
+	.book-card-hero__body {
+		padding-right: $spacing-lg;
+	}
 }
 
 // ── 소형 모바일 (≤380px) ─────────────────────────────────────────────────────
 @media (max-width: 380px) {
-
 	// 헤더 버튼 텍스트 숨기고 이모지만 표시
-	.header__btn-text { display: none; }
+	.header__btn-text {
+		display: none;
+	}
 
 	.header__btn {
 		padding: 7px 10px;
 	}
 
 	// 리스트 — 날짜 숨김, 패딩 축소
-	.record-item__date { display: none; }
+	.record-item__date {
+		display: none;
+	}
 	.record-item {
 		padding: $spacing-sm $spacing-md;
 	}
