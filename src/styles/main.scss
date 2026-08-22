@@ -1,0 +1,2682 @@
+@use "sass:color";
+@use "variables" as *;
+@use "reset";
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+.layout {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background: $color-bg;
+}
+
+.container {
+	width: 100%;
+	max-width: $max-width;
+	margin: 0 auto;
+	padding: 0 $spacing-xl;
+
+	@media (max-width: $bp-sm) {
+		padding: 0 $spacing-md;
+	}
+}
+
+.page-content {
+	flex: 1;
+	padding: 0 0 $spacing-3xl;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+.header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	height: $header-height;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(16px);
+	border-bottom: 1px solid $color-border-light;
+
+	&__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 100%;
+		padding-top: 10px;
+	}
+
+	&__logo {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+		cursor: pointer;
+
+		&-badge {
+			width: 36px;
+			height: 36px;
+			background: $color-primary;
+			border-radius: $radius-md;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.1rem;
+			flex-shrink: 0;
+			box-shadow: $shadow-pop;
+		}
+
+		&-text {
+			display: flex;
+			flex-direction: column;
+			gap: 1px;
+		}
+
+		&-title {
+			font-size: 0.9375rem;
+			font-weight: $font-weight-bold;
+			color: $color-ink;
+			letter-spacing: -0.02em;
+			line-height: 1.2;
+		}
+
+		&-sub {
+			font-size: $font-size-xs;
+			color: $color-ink-muted;
+			letter-spacing: 0.04em;
+		}
+	}
+
+	&__nav {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+	}
+
+	&__btn {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: 9px 20px;
+		border-radius: $radius-full;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semibold;
+		transition: all $transition-fast;
+		cursor: pointer;
+
+		&--write {
+			background: $color-primary;
+			color: white;
+			border: 2px solid $color-primary;
+			box-shadow: $shadow-pop;
+
+			&:hover {
+				background: $color-primary-hover;
+				border-color: $color-primary-hover;
+				transform: translate(-1px, -2px);
+				box-shadow: 6px 9px 0px rgba(45, 66, 112, 0.25);
+			}
+
+			&:active {
+				transform: translate(1px, 1px);
+				box-shadow: 2px 3px 0px rgba(45, 66, 112, 0.18);
+			}
+		}
+
+		&--ghost {
+			color: $color-ink-secondary;
+			border: 1.5px solid $color-border;
+			background: white;
+
+			&:hover {
+				border-color: $color-primary-light;
+				color: $color-primary-light;
+				background: $color-primary-pale;
+			}
+		}
+	}
+}
+
+// ─── Hero Section ─────────────────────────────────────────────────────────────
+.hero {
+	background-image: url("../assets/hero.png");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	@media (max-width: $bp-md) {
+		background-image: url("../assets/hero_mobile.png");
+		background-position: center top;
+	}
+	position: relative;
+	overflow: hidden;
+	padding: $spacing-3xl 0;
+
+	// 텍스트 가독성을 위한 오버레이
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: $color-hero-overlay;
+	}
+
+	&::after {
+		content: none;
+	}
+
+	&__inner {
+		display: flex;
+		align-items: center;
+		gap: $spacing-2xl;
+		position: relative;
+		z-index: 1;
+
+		@media (max-width: $bp-md) {
+			flex-direction: column;
+			text-align: center;
+		}
+	}
+
+	&__content {
+		flex: 1;
+	}
+
+	&__eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-sm;
+		padding: 5px 14px;
+		background: rgba(255, 255, 255, 0.12);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: $radius-full;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: rgba(255, 255, 255, 0.85);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		margin-bottom: $spacing-lg;
+	}
+
+	&__title {
+		font-family: $font-display;
+		font-size: clamp(2rem, 6vw, 3rem);
+		font-weight: $font-weight-bold;
+		color: white;
+		letter-spacing: -0.03em;
+		line-height: 1.15;
+		margin-bottom: $spacing-lg;
+		word-break: keep-all;
+	}
+
+	&__desc {
+		font-size: $font-size-base;
+		color: rgba(255, 255, 255, 0.7);
+		line-height: 1.8;
+		margin-bottom: $spacing-xl;
+		max-width: 420px;
+
+		@media (max-width: $bp-md) {
+			max-width: none;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		gap: $spacing-sm;
+		flex-wrap: wrap;
+
+		@media (max-width: $bp-md) {
+			justify-content: center;
+		}
+	}
+
+	&__cta {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: 13px 28px;
+		border-radius: $radius-full;
+		font-size: $font-size-base;
+		font-weight: $font-weight-bold;
+		cursor: pointer;
+		transition: all $transition-fast;
+		letter-spacing: -0.01em;
+
+		&--primary {
+			background: white;
+			color: $color-primary;
+			border: 2px solid white;
+			box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.15);
+
+			&:hover {
+				transform: translate(-2px, -3px);
+				box-shadow: 6px 9px 0 rgba(0, 0, 0, 0.18);
+			}
+		}
+
+		&--secondary {
+			background: transparent;
+			color: rgba(255, 255, 255, 0.85);
+			border: 1.5px solid rgba(255, 255, 255, 0.3);
+
+			&:hover {
+				background: rgba(255, 255, 255, 0.1);
+				color: white;
+				border-color: rgba(255, 255, 255, 0.5);
+			}
+		}
+	}
+
+	&__image {
+		flex-shrink: 0;
+		width: 280px;
+
+		@media (max-width: $bp-md) {
+			width: 200px;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+			filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.25));
+			animation: float 4s ease-in-out infinite;
+		}
+	}
+
+	&__stats {
+		display: flex;
+		gap: $spacing-xl;
+		margin-top: $spacing-xl;
+		padding-top: $spacing-lg;
+		border-top: 1px solid rgba(255, 255, 255, 0.12);
+
+		@media (max-width: $bp-md) {
+			justify-content: center;
+		}
+	}
+
+	&__stat {
+		&-num {
+			font-family: $font-display;
+			font-size: 1.75rem;
+			font-weight: $font-weight-bold;
+			color: white;
+			line-height: 1;
+			margin-bottom: 4px;
+		}
+
+		&-label {
+			font-size: $font-size-xs;
+			color: rgba(255, 255, 255, 0.55);
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+	}
+}
+
+// ─── Section Header ───────────────────────────────────────────────────────────
+.section-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	margin-bottom: $spacing-lg;
+
+	&__title {
+		font-size: $font-size-xl;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		letter-spacing: -0.02em;
+	}
+
+	&__count {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		background: $color-primary-pale;
+		padding: 2px 10px;
+		border-radius: $radius-full;
+		font-weight: $font-weight-medium;
+		color: $color-primary;
+	}
+}
+
+// ─── Main Content Area ────────────────────────────────────────────────────────
+.main-sections {
+	padding: $spacing-2xl 0 0;
+}
+
+// ─── This Week Section ────────────────────────────────────────────────────────
+.this-week {
+	margin-bottom: $spacing-3xl;
+
+	&__heading {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: $spacing-xl;
+	}
+
+	&__label-group {
+		display: flex;
+		align-items: center;
+		gap: $spacing-md;
+	}
+
+	&__badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		padding: 6px 16px;
+		background: $color-primary;
+		color: white;
+		border-radius: $radius-full;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		box-shadow: $shadow-pop;
+
+		&-dot {
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			background: $color-accent;
+			animation: pulse 1.8s ease-in-out infinite;
+			flex-shrink: 0;
+		}
+	}
+
+	&__week-label {
+		font-size: $font-size-sm;
+		color: $color-ink-muted;
+	}
+
+	&__empty {
+		padding: $spacing-2xl;
+		text-align: center;
+		background: $color-primary-pale;
+		border: 2px dashed $color-border;
+		border-radius: $radius-xl;
+		color: $color-ink-muted;
+		font-size: $font-size-base;
+
+		&-emoji {
+			font-size: 2.5rem;
+			display: block;
+			margin-bottom: $spacing-sm;
+		}
+
+		&-link {
+			color: $color-primary-light;
+			font-weight: $font-weight-semibold;
+			cursor: pointer;
+			text-decoration: underline;
+			text-underline-offset: 3px;
+		}
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: $spacing-lg;
+
+		@media (max-width: $bp-sm) {
+			grid-template-columns: 1fr;
+		}
+	}
+}
+
+// ─── This Week List (hero cards) ─────────────────────────────────────────────
+.this-week__list {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+}
+
+// ─── Book Card Hero (이번 주 풀너비) ─────────────────────────────────────────
+.book-card-hero {
+	display: block;
+	position: relative;
+	border-radius: $radius-xl;
+	overflow: hidden;
+	cursor: pointer;
+	background: white;
+	border: 1.5px solid $color-border-light;
+	box-shadow: $shadow-card;
+	transition:
+		transform $transition-base,
+		box-shadow $transition-base;
+
+	&:hover {
+		transform: translate(-3px, -4px);
+		box-shadow: $shadow-lg;
+	}
+
+	&:active {
+		transform: translate(1px, 1px);
+	}
+
+	// color variants
+	&--color-0 {
+		.book-card-hero__stripe {
+			background: $card-0-accent;
+		}
+		.book-card-hero__no {
+			color: $card-0-accent;
+		}
+	}
+	&--color-1 {
+		.book-card-hero__stripe {
+			background: $card-1-accent;
+		}
+		.book-card-hero__no {
+			color: $card-1-accent;
+		}
+	}
+	&--color-2 {
+		.book-card-hero__stripe {
+			background: $card-2-accent;
+		}
+		.book-card-hero__no {
+			color: $card-2-accent;
+		}
+	}
+	&--color-3 {
+		.book-card-hero__stripe {
+			background: $card-3-accent;
+		}
+		.book-card-hero__no {
+			color: $card-3-accent;
+		}
+	}
+	&--color-4 {
+		.book-card-hero__stripe {
+			background: $card-4-accent;
+		}
+		.book-card-hero__no {
+			color: $card-4-accent;
+		}
+	}
+
+	&__body {
+		padding: $spacing-xl;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+	}
+
+	&__stripe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+	}
+
+	&__no {
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin-top: $spacing-xs;
+		margin-bottom: $spacing-sm;
+	}
+
+	&__title {
+		font-size: $font-size-xl;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		line-height: 1.35;
+		letter-spacing: -0.02em;
+		margin-bottom: $spacing-sm;
+		word-break: keep-all;
+
+		@media (max-width: $bp-sm) {
+			font-size: $font-size-lg;
+		}
+	}
+
+	&__topic {
+		font-size: $font-size-sm;
+		color: $color-ink-secondary;
+		line-height: 1.6;
+		margin-bottom: auto;
+		padding: $spacing-sm $spacing-md;
+		background: $color-bg;
+		border-radius: $radius-md;
+		border-left: 2px solid $color-accent;
+		word-break: keep-all;
+		flex: 1;
+
+		&-label {
+			display: inline-block;
+			font-size: $font-size-xs;
+			font-weight: $font-weight-bold;
+			color: $color-ink-muted;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			margin-right: $spacing-sm;
+		}
+	}
+
+	&__footer {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $spacing-xs;
+		align-items: center;
+		padding-top: $spacing-md;
+		margin-top: $spacing-md;
+		border-top: 1px solid $color-border-light;
+	}
+
+	&__tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		padding: 3px 10px;
+		background: $color-tag-bg;
+		border-radius: $radius-full;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: $color-tag-text;
+
+		&--date {
+			margin-left: auto;
+			background: transparent;
+			color: $color-ink-muted;
+		}
+	}
+}
+
+// ─── Book Card ────────────────────────────────────────────────────────────────
+.book-card {
+	display: flex;
+	flex-direction: column;
+	border-radius: $radius-xl;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition:
+		transform $transition-base,
+		box-shadow $transition-base;
+	border: 1.5px solid $color-border-light;
+	box-shadow: $shadow-card;
+	background: white;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: $shadow-lg;
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+
+	// color accent bar (top)
+	&::before {
+		content: "";
+		display: block;
+		height: 4px;
+		width: 100%;
+		flex-shrink: 0;
+	}
+	&--color-0::before {
+		background: $card-0-accent;
+	}
+	&--color-1::before {
+		background: $card-1-accent;
+	}
+	&--color-2::before {
+		background: $card-2-accent;
+	}
+	&--color-3::before {
+		background: $card-3-accent;
+	}
+	&--color-4::before {
+		background: $card-4-accent;
+	}
+
+	// ── 표지 (전체 너비) ──
+	&__cover-wrap {
+		width: 100%;
+		aspect-ratio: 2/3;
+		overflow: hidden;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 16px;
+		box-sizing: border-box;
+		background: $color-bg-warm;
+	}
+
+	&__cover {
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		display: block;
+		border-radius: 4px;
+		box-shadow: $shadow-md;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+	}
+
+	&:hover &__cover {
+		transform: scale(1.06);
+		box-shadow: $shadow-lg;
+	}
+
+	&__cover-placeholder {
+		@extend %cover-placeholder;
+		font-size: 2.5rem;
+		width: 100%;
+		height: 100%;
+	}
+
+	// ── 정보 (하단) ──
+	&__info {
+		padding: $spacing-sm $spacing-md $spacing-md;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	&__top {
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+		margin-bottom: 4px;
+	}
+
+	&__no {
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		letter-spacing: 0.06em;
+		color: $color-ink-muted;
+	}
+
+	&__emoji {
+		font-size: 1rem;
+		line-height: 1;
+	}
+
+	&__title {
+		font-size: $font-size-base;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		line-height: 1.35;
+		letter-spacing: -0.01em;
+		word-break: keep-all;
+		margin-bottom: 2px;
+	}
+
+	&__author {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		margin-bottom: $spacing-xs;
+	}
+
+	&__date {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		margin-top: auto;
+		padding-top: $spacing-xs;
+	}
+}
+
+// ── 바둑판 그리드 ──
+.record-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: $spacing-md;
+
+	.book-card {
+		width: 100%;
+	}
+
+	.book-card__cover-wrap {
+		width: 100%;
+		aspect-ratio: 3 / 5;
+		max-height: 320px;
+	}
+}
+
+// ─── Record List ──────────────────────────────────────────────────────────────
+.record-section {
+	&__title {
+		font-size: $font-size-xl;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		margin-bottom: $spacing-lg;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		letter-spacing: -0.02em;
+	}
+
+	&__title-left {
+		display: flex;
+		align-items: baseline;
+		gap: $spacing-sm;
+	}
+
+	&__count {
+		font-size: 0.75rem;
+		font-weight: 400;
+		color: $color-ink-muted;
+		background: $color-primary-pale;
+		padding: 2px 10px;
+		border-radius: $radius-full;
+	}
+}
+
+// ── 뷰 토글 ──
+.view-toggle {
+	display: flex;
+	gap: 2px;
+	background: $color-bg-warm;
+	border: 1px solid $color-border;
+	border-radius: $radius-md;
+	padding: 3px;
+
+	&__btn {
+		padding: 4px 10px;
+		border: none;
+		background: transparent;
+		border-radius: $radius-sm;
+		cursor: pointer;
+		font-size: 1rem;
+		color: $color-ink-muted;
+		transition: all $transition-fast;
+
+		&:hover {
+			color: $color-ink;
+		}
+
+		&--active {
+			background: white;
+			color: $color-primary;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+	}
+}
+
+.record-list {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.record-item {
+	display: grid;
+	grid-template-columns: 56px 1fr auto;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md $spacing-lg;
+	background: white;
+	border: 1.5px solid $color-border-light;
+	border-radius: $radius-lg;
+	cursor: pointer;
+	transition: all $transition-fast;
+
+	&:hover {
+		border-color: $color-primary-light;
+		background: $color-primary-pale;
+		transform: translateX(4px);
+		box-shadow: $shadow-sm;
+
+		.record-item__arrow {
+			transform: translateX(4px);
+			color: $color-primary-light;
+		}
+
+		.record-item__title {
+			color: $color-primary;
+		}
+	}
+
+	&__no {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-bold;
+		color: $color-primary-light;
+		background: $color-primary-pale;
+		border-radius: $radius-md;
+		padding: $spacing-xs;
+		text-align: center;
+		border: 1px solid $color-border;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+	}
+
+	&__emoji {
+		font-size: 1.1rem;
+		line-height: 1;
+	}
+
+	&__body {
+		overflow: hidden;
+	}
+
+	&__title {
+		font-size: $font-size-base;
+		font-weight: $font-weight-semibold;
+		color: $color-ink;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		margin-bottom: 2px;
+		transition: color $transition-fast;
+	}
+
+	&__sub {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+	}
+
+	&__right {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+	}
+
+	&__date {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		white-space: nowrap;
+	}
+
+	&__arrow {
+		font-size: 1rem;
+		color: $color-ink-muted;
+		transition: all $transition-fast;
+		font-weight: bold;
+	}
+}
+
+.this-week-badge-inline {
+	display: inline-block;
+	padding: 1px 8px;
+	background: $color-accent;
+	color: white;
+	border-radius: $radius-sm;
+	font-size: 0.65rem;
+	font-weight: $font-weight-bold;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+// ─── Page Header ──────────────────────────────────────────────────────────────
+.page-header {
+	margin: $spacing-lg 0;
+
+	&__back {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		font-size: $font-size-sm;
+		color: $color-ink-muted;
+		margin-bottom: $spacing-md;
+		cursor: pointer;
+		transition: all $transition-fast;
+		background: white;
+		border: 1.5px solid $color-border;
+		padding: $spacing-xs $spacing-md;
+		border-radius: $radius-full;
+
+		&:hover {
+			color: $color-primary-light;
+			border-color: $color-border;
+			background: $color-primary-pale;
+		}
+	}
+
+	&__title {
+		font-size: $font-size-2xl;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		letter-spacing: -0.03em;
+		margin-top: $spacing-sm;
+	}
+
+	&__sub {
+		font-size: $font-size-sm;
+		color: $color-ink-muted;
+		margin-top: $spacing-xs;
+	}
+}
+
+// ─── Form ─────────────────────────────────────────────────────────────────────
+.form {
+	background: $color-surface;
+	border: 1.5px solid $color-border-light;
+	border-radius: $radius-2xl;
+	padding: $spacing-2xl;
+	box-shadow: $shadow-card;
+
+	@media (max-width: $bp-sm) {
+		padding: $spacing-lg;
+		border-radius: $radius-xl;
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: $spacing-lg;
+
+		@media (max-width: $bp-md) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	&__field {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+
+		&--full {
+			grid-column: 1 / -1;
+		}
+	}
+
+	&__label {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+
+		&-required {
+			color: $color-accent;
+			margin-left: 2px;
+		}
+	}
+
+	&__input,
+	&__select,
+	&__textarea {
+		width: 100%;
+		padding: $spacing-sm $spacing-md;
+		border: 1.5px solid $color-border;
+		border-radius: $radius-md;
+		font-size: $font-size-base;
+		color: $color-ink;
+		background: white;
+		transition:
+			border-color $transition-fast,
+			box-shadow $transition-fast;
+		outline: none;
+		font-family: $font-sans;
+
+		&:focus {
+			border-color: $color-primary-light;
+			box-shadow: 0 0 0 4px rgba($color-primary, 0.08);
+		}
+
+		&::placeholder {
+			color: $color-ink-muted;
+		}
+	}
+
+	&__textarea {
+		resize: vertical;
+		min-height: 120px;
+		line-height: 1.7;
+	}
+
+	&__input--date {
+		cursor: pointer;
+
+		&::-webkit-calendar-picker-indicator {
+			cursor: pointer;
+			opacity: 0.6;
+		}
+	}
+
+	&__select {
+		cursor: pointer;
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%235b21b6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right $spacing-md center;
+		padding-right: $spacing-2xl;
+	}
+
+	&__divider {
+		grid-column: 1 / -1;
+		border: none;
+		border-top: 1.5px dashed $color-border-light;
+		margin: $spacing-xs 0;
+	}
+
+	&__section-title {
+		grid-column: 1 / -1;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-bold;
+		color: $color-ink-secondary;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		margin-top: $spacing-sm;
+	}
+
+	&__error {
+		font-size: 0.8rem;
+		color: #e53e3e;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: $spacing-sm;
+		margin-top: $spacing-xl;
+		padding-top: $spacing-xl;
+		border-top: 1.5px dashed $color-border-light;
+	}
+}
+
+// ─── Participant Selector ─────────────────────────────────────────────────────
+.participant-selector {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $spacing-sm;
+
+	&__chip {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: 6px 14px;
+		border-radius: $radius-full;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semibold;
+		border: 1.5px solid $color-border;
+		color: $color-ink-secondary;
+		background: white;
+		cursor: pointer;
+		transition: all $transition-fast;
+		user-select: none;
+
+		&--active {
+			border-color: $color-primary;
+			background: $color-primary;
+			color: white;
+			box-shadow: 2px 3px 0 rgba($color-primary, 0.3);
+		}
+
+		&:hover:not(&--active) {
+			border-color: $color-primary-light;
+			background: $color-primary-pale;
+			color: $color-primary-light;
+			transform: translateY(-1px);
+		}
+
+		&-remove {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			font-size: 9px;
+			line-height: 1;
+			opacity: 0.8;
+
+			&:hover {
+				opacity: 1;
+				background: rgba(255, 255, 255, 0.25);
+			}
+		}
+	}
+}
+
+// ─── Buttons ──────────────────────────────────────────────────────────────────
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-xs;
+	padding: $spacing-sm $spacing-xl;
+	border-radius: $radius-md;
+	font-size: $font-size-base;
+	font-weight: $font-weight-bold;
+	transition: all $transition-fast;
+	cursor: pointer;
+	letter-spacing: -0.01em;
+
+	&--primary {
+		background: $color-primary;
+		color: white;
+		border: 2px solid $color-primary;
+		box-shadow: $shadow-pop;
+
+		&:hover {
+			background: $color-primary-hover;
+			border-color: $color-primary-hover;
+			transform: translate(-2px, -2px);
+			box-shadow: 7px 9px 0px rgba(45, 66, 112, 0.22);
+		}
+
+		&:active {
+			transform: translate(1px, 1px);
+			box-shadow: 2px 3px 0px rgba(45, 66, 112, 0.18);
+		}
+	}
+
+	&--secondary {
+		background: white;
+		color: $color-ink-secondary;
+		border: 1.5px solid $color-border;
+
+		&:hover {
+			background: $color-primary-pale;
+			border-color: $color-border;
+			color: $color-primary;
+		}
+	}
+
+	&--danger {
+		background: white;
+		color: #b85540;
+		border: 1.5px solid #f0d8d3;
+
+		&:hover {
+			background: #fdf0ed;
+			border-color: #e0b0b0;
+		}
+	}
+
+	&--sm {
+		padding: $spacing-xs $spacing-md;
+		font-size: $font-size-sm;
+		border-radius: $radius-sm;
+	}
+}
+
+// ─── Detail Page ──────────────────────────────────────────────────────────────
+.detail {
+	margin-top: 30px;
+	&__card {
+		background: $color-surface;
+		border: 1.5px solid $color-border-light;
+		border-radius: $radius-2xl;
+		overflow: hidden;
+		margin-bottom: $spacing-xl;
+		box-shadow: $shadow-card;
+	}
+
+	&__banner {
+		background: linear-gradient(
+			135deg,
+			$color-primary 0%,
+			color.adjust($color-primary, $lightness: -8%) 100%
+		);
+		padding: $spacing-2xl;
+		color: white;
+		position: relative;
+		overflow: hidden;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: -40px;
+			right: -40px;
+			width: 200px;
+			height: 200px;
+			background: rgba(255, 255, 255, 0.04);
+			border-radius: 50%;
+		}
+
+		&-deco {
+			position: absolute;
+			right: $spacing-xl;
+			bottom: $spacing-lg;
+			font-size: 5rem;
+			opacity: 0.1;
+			user-select: none;
+		}
+	}
+
+	&__no {
+		display: inline-block;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		background: rgba(255, 255, 255, 0.15);
+		padding: 3px 10px;
+		border-radius: $radius-full;
+		margin-bottom: $spacing-sm;
+	}
+
+	&__title {
+		font-size: $font-size-2xl;
+		font-weight: $font-weight-bold;
+		letter-spacing: -0.03em;
+		line-height: 1.25;
+		margin-bottom: $spacing-md;
+		word-break: keep-all;
+	}
+
+	&__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $spacing-sm;
+	}
+
+	&__tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 5px $spacing-md;
+		background: rgba(255, 255, 255, 0.14);
+		border: 1px solid rgba(255, 255, 255, 0.22);
+		border-radius: $radius-full;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+	}
+
+	&__body {
+		padding: $spacing-2xl;
+	}
+
+	&__topic {
+		margin-bottom: $spacing-xl;
+		padding: $spacing-lg;
+		background: $color-accent-pale;
+		border-radius: $radius-lg;
+		border-left: 4px solid $color-accent;
+
+		&-label {
+			font-size: $font-size-xs;
+			font-weight: $font-weight-bold;
+			color: $color-accent-dark;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			margin-bottom: $spacing-xs;
+		}
+
+		&-text {
+			font-size: $font-size-md;
+			color: $color-ink;
+			line-height: 1.7;
+			word-break: keep-all;
+		}
+	}
+
+	&__info-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		gap: $spacing-md;
+		margin-bottom: $spacing-xl;
+		padding: $spacing-lg;
+		background: $color-bg-warm;
+		border-radius: $radius-lg;
+		border: 1.5px solid $color-border-light;
+	}
+
+	&__info-item {
+		&-label {
+			font-size: $font-size-xs;
+			font-weight: $font-weight-bold;
+			color: $color-ink-muted;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			margin-bottom: 4px;
+		}
+
+		&-value {
+			font-size: $font-size-sm;
+			color: $color-ink;
+			font-weight: $font-weight-semibold;
+		}
+	}
+
+	&__opinions {
+		&-title {
+			font-size: $font-size-lg;
+			font-weight: $font-weight-bold;
+			color: $color-primary;
+			margin-bottom: $spacing-lg;
+			display: flex;
+			align-items: center;
+			gap: $spacing-sm;
+
+			&-emoji {
+				font-size: 1.2rem;
+			}
+		}
+	}
+
+	&__opinion-item {
+		margin-bottom: $spacing-md;
+		padding: $spacing-lg;
+		background: $color-surface;
+		border-radius: $radius-lg;
+		border: 1.5px solid $color-border-light;
+		transition: border-color $transition-fast;
+
+		&:hover {
+			border-color: $color-border;
+		}
+
+		&-author {
+			display: flex;
+			align-items: center;
+			gap: $spacing-sm;
+			margin-bottom: $spacing-sm;
+
+			&-avatar {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background: linear-gradient(135deg, $color-primary, $color-primary-light);
+				color: white;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: $font-size-sm;
+				font-weight: $font-weight-bold;
+				flex-shrink: 0;
+				box-shadow: 2px 2px 0 rgba($color-primary, 0.2);
+			}
+
+			&-name {
+				font-size: $font-size-sm;
+				font-weight: $font-weight-bold;
+				color: $color-ink;
+			}
+		}
+
+		&-text {
+			font-size: $font-size-sm;
+			color: $color-ink-secondary;
+			line-height: 1.8;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+
+		&-empty {
+			color: $color-ink-muted;
+			font-style: italic;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		gap: $spacing-sm;
+		justify-content: flex-end;
+		padding-top: $spacing-lg;
+		margin-top: $spacing-lg;
+		border-top: 1.5px dashed $color-border-light;
+	}
+}
+
+// ─── Opinion inline editor ────────────────────────────────────────────────────
+.opinion-edit-btn {
+	margin-left: auto;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-primary-light;
+	background: $color-primary-pale;
+	border: 1px solid $color-border;
+	border-radius: $radius-full;
+	padding: 3px 10px;
+	cursor: pointer;
+	transition: all $transition-fast;
+
+	&:hover {
+		background: $color-primary;
+		color: white;
+		border-color: $color-primary;
+	}
+}
+
+.opinion-editor {
+	margin-top: $spacing-sm;
+
+	&__textarea {
+		width: 100%;
+		min-height: 100px;
+		padding: $spacing-sm $spacing-md;
+		border: 1.5px solid $color-primary-light;
+		border-radius: $radius-md;
+		font-size: $font-size-sm;
+		font-family: $font-sans;
+		color: $color-ink;
+		background: white;
+		line-height: 1.75;
+		resize: vertical;
+		outline: none;
+		box-shadow: 0 0 0 3px rgba($color-primary, 0.08);
+
+		&::placeholder {
+			color: $color-ink-muted;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: $spacing-xs;
+		margin-top: $spacing-sm;
+	}
+}
+
+// ─── Empty State ──────────────────────────────────────────────────────────────
+.empty-state {
+	text-align: center;
+	padding: $spacing-3xl $spacing-xl;
+	color: $color-ink-muted;
+
+	&__icon {
+		font-size: 3.5rem;
+		margin-bottom: $spacing-md;
+		display: block;
+		animation: bounce 2s ease-in-out infinite;
+	}
+
+	&__text {
+		font-size: $font-size-base;
+		font-weight: $font-weight-semibold;
+		color: $color-ink-secondary;
+		margin-bottom: $spacing-xs;
+	}
+
+	&__sub {
+		font-size: $font-size-sm;
+	}
+}
+
+// ─── Divider ──────────────────────────────────────────────────────────────────
+.section-divider {
+	height: 1.5px;
+	background: linear-gradient(to right, transparent, $color-border, transparent);
+	margin: $spacing-2xl 0;
+}
+
+// ─── Participants chips ────────────────────────────────────────────────────────
+.participants-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $spacing-xs;
+
+	&__chip {
+		padding: 3px $spacing-sm;
+		background: $color-tag-bg;
+		color: $color-tag-text;
+		border-radius: $radius-full;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		border: 1px solid $color-border;
+	}
+}
+
+// ─── Animations ───────────────────────────────────────────────────────────────
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.4;
+		transform: scale(0.7);
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-12px);
+	}
+}
+
+// ─── Book Search Input ────────────────────────────────────────────────────────
+.book-search {
+	position: relative;
+	width: 100%;
+
+	&__input-wrap {
+		position: relative;
+		width: 100%;
+	}
+
+	&__input {
+		width: 100%;
+	}
+
+	&__spinner {
+		position: absolute;
+		right: 12px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 16px;
+		height: 16px;
+		border: 2px solid $color-border;
+		border-top-color: $color-primary;
+		border-radius: 50%;
+		animation: spin 0.6s linear infinite;
+	}
+
+	&__dropdown {
+		position: absolute;
+		top: calc(100% + 4px);
+		left: 0;
+		right: 0;
+		z-index: 300;
+		background: white;
+		border: 1px solid $color-border;
+		border-radius: $radius-lg;
+		box-shadow: $shadow-lg;
+		list-style: none;
+		padding: $spacing-xs;
+		max-height: 320px;
+		overflow-y: auto;
+		animation: slideUp 0.12s ease;
+	}
+
+	&__item {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+		padding: $spacing-xs $spacing-sm;
+		border-radius: $radius-md;
+		cursor: pointer;
+		transition: background $transition-fast;
+
+		&:hover {
+			background: $color-primary-pale;
+		}
+	}
+
+	&__cover {
+		width: 40px;
+		height: 54px;
+		flex-shrink: 0;
+		border-radius: 3px;
+		overflow: hidden;
+		background: $color-bg-warm;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.2rem;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__info {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	&__title {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: $color-ink;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__meta {
+		font-size: 0.75rem;
+		color: $color-ink-muted;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__hint {
+		margin-top: $spacing-xs;
+		font-size: 0.78rem;
+		color: $color-ink-muted;
+
+		code {
+			background: $color-bg-warm;
+			padding: 1px 5px;
+			border-radius: 3px;
+			font-size: 0.75rem;
+		}
+	}
+}
+
+@keyframes spin {
+	to {
+		transform: translateY(-50%) rotate(360deg);
+	}
+}
+
+// ─── Book Cover ───────────────────────────────────────────────────────────────
+
+// 공통 플레이스홀더 믹스인
+%cover-placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, $color-bg-warm 0%, $color-border-light 100%);
+	font-size: 1.6rem;
+}
+
+// ── BookCard ──
+/* book-card cover styles are defined inside .book-card block above */
+
+// ── BookCardHero ──
+.book-card-hero__cover-wrap {
+	position: absolute;
+	right: $spacing-lg;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 80px;
+	height: 110px;
+	border-radius: $radius-sm;
+	overflow: hidden;
+	box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.book-card-hero__cover {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.book-card-hero__cover-placeholder {
+	@extend %cover-placeholder;
+}
+
+// ── DetailPage ──
+.detail__cover-wrap {
+	float: right;
+	margin: 0 0 $spacing-md $spacing-md;
+	width: 100px;
+	border-radius: $radius-md;
+	overflow: hidden;
+	box-shadow: $shadow-md;
+	aspect-ratio: 2/3;
+
+	@media (min-width: 600px) {
+		width: 130px;
+	}
+}
+
+.detail__cover {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.detail__cover-placeholder {
+	@extend %cover-placeholder;
+	min-height: 140px;
+	font-size: 2rem;
+}
+
+// ── Form book-field (폼 내 표지 + 제목/작가/챕터 묶음) ──
+.book-field {
+	display: flex;
+	gap: $spacing-md;
+	align-items: flex-start;
+	background: $color-surface-alt;
+	border: 1.5px solid $color-border-light;
+	border-radius: $radius-lg;
+	padding: $spacing-md;
+
+	&__cover {
+		width: 160px;
+		height: 224px;
+		flex-shrink: 0;
+		border-radius: $radius-md;
+		overflow: hidden;
+		box-shadow: $shadow-md;
+		border: 1px solid $color-border-light;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+	}
+
+	&__cover-placeholder {
+		@extend %cover-placeholder;
+		font-size: 1.8rem;
+	}
+
+	&__fields {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+	}
+
+	&__row {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+
+		.form__input {
+			padding: 6px 10px;
+			font-size: 0.875rem;
+		}
+
+		.book-search__input {
+			padding: 6px 10px;
+			font-size: 0.875rem;
+		}
+	}
+
+	&__label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		color: $color-ink-secondary;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+	}
+
+	&__optional {
+		font-weight: 400;
+		color: $color-ink-muted;
+		text-transform: none;
+	}
+}
+
+// ─── Topics List (화두 동적 입력) ─────────────────────────────────────────────
+.topics-list {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xs;
+
+	&__row {
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+	}
+
+	&__num {
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: $color-primary-pale;
+		color: $color-primary;
+		font-size: 0.72rem;
+		font-weight: $font-weight-bold;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+
+	&__remove {
+		width: 26px;
+		height: 26px;
+		border: none;
+		background: $color-border-light;
+		border-radius: 50%;
+		color: $color-ink-muted;
+		font-size: 0.7rem;
+		cursor: pointer;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all $transition-fast;
+
+		&:hover {
+			background: $color-accent-pale;
+			color: $color-accent-dark;
+		}
+	}
+
+	&__add {
+		margin-top: 4px;
+		border: 1.5px dashed $color-border;
+		background: transparent;
+		border-radius: $radius-md;
+		padding: 7px $spacing-md;
+		font-size: $font-size-sm;
+		color: $color-primary-light;
+		cursor: pointer;
+		transition: all $transition-fast;
+		align-self: flex-start;
+
+		&:hover {
+			border-color: $color-primary-light;
+			background: $color-primary-pale;
+		}
+	}
+}
+
+// ─── Detail Topics ─────────────────────────────────────────────────────────────
+.detail__topics {
+	margin-bottom: $spacing-lg;
+}
+
+.detail__topic-label {
+	font-size: $font-size-xs;
+	font-weight: $font-weight-bold;
+	color: $color-ink-muted;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin-bottom: $spacing-xs;
+}
+
+.detail__topic-item {
+	display: flex;
+	align-items: baseline;
+	gap: $spacing-sm;
+	padding: $spacing-sm 0;
+	border-bottom: 1px solid $color-border-light;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.detail__topic-num {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: $color-primary-pale;
+	color: $color-primary;
+	font-size: 0.72rem;
+	font-weight: $font-weight-bold;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.detail__topic-text {
+	font-size: $font-size-base;
+	color: $color-ink;
+	line-height: 1.5;
+	word-break: keep-all;
+}
+
+.detail__opinions-topic-num {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: $color-primary;
+	color: white;
+	font-size: 0.68rem;
+	font-weight: $font-weight-bold;
+	margin-right: $spacing-xs;
+	flex-shrink: 0;
+}
+
+// ─── Emoji Picker (모달) ──────────────────────────────────────────────────────
+.emoji-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	background: rgba(20, 30, 60, 0.45);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: fadeIn 0.15s ease;
+}
+
+.emoji-modal {
+	animation: popIn 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+	em-emoji-picker {
+		--border-radius: 16px;
+		--shadow: 0 8px 40px rgba(20, 30, 60, 0.18);
+	}
+}
+
+// 트리거 버튼 (form 내)
+.emoji-trigger-row {
+	display: flex;
+	align-items: center;
+	gap: $spacing-xs;
+}
+
+.emoji-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 14px;
+	border: 1.5px dashed $color-border;
+	border-radius: $radius-md;
+	background: $color-surface-alt;
+	cursor: pointer;
+	transition: all $transition-fast;
+	font-size: 1.5rem;
+	line-height: 1;
+
+	&:hover {
+		border-color: $color-primary-light;
+		background: $color-primary-pale;
+	}
+
+	&--filled {
+		border-style: solid;
+		border-color: $color-border;
+		background: white;
+	}
+
+	&__placeholder {
+		font-size: 0.9rem;
+		color: $color-ink-muted;
+	}
+
+	&__clear {
+		font-size: 0.75rem;
+		color: $color-ink-muted;
+		background: $color-border-light;
+		border: none;
+		border-radius: $radius-sm;
+		padding: 4px 8px;
+		cursor: pointer;
+		transition: all $transition-fast;
+
+		&:hover {
+			background: $color-accent-pale;
+			color: $color-accent-dark;
+		}
+	}
+}
+
+@keyframes popIn {
+	from {
+		opacity: 0;
+		transform: scale(0.85);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+// detail 이모지
+.detail__emoji {
+	font-size: 2.5rem;
+	line-height: 1;
+	margin-bottom: $spacing-sm;
+	display: block;
+}
+
+// book-card-hero top row
+.book-card-hero__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: $spacing-sm;
+}
+
+.book-card-hero__emoji {
+	font-size: 1.5rem;
+	line-height: 1;
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(26, 32, 53, 0.55);
+	backdrop-filter: blur(4px);
+	z-index: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-lg;
+	animation: fadeIn 0.18s ease;
+}
+
+.modal {
+	background: white;
+	border-radius: $radius-2xl;
+	width: 100%;
+	max-width: 480px;
+	box-shadow: $shadow-lg;
+	animation: slideUp 0.22s ease;
+	overflow: hidden;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: $spacing-xl $spacing-xl $spacing-md;
+		border-bottom: 1px solid $color-border-light;
+	}
+
+	&__title {
+		font-family: $font-serif;
+		font-size: $font-size-xl;
+		font-weight: $font-weight-semibold;
+		color: $color-ink;
+		letter-spacing: -0.01em;
+	}
+
+	&__close {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		border: 1.5px solid $color-border;
+		background: transparent;
+		color: $color-ink-muted;
+		font-size: 0.8rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all $transition-fast;
+		flex-shrink: 0;
+
+		&:hover {
+			background: $color-border-light;
+			color: $color-ink;
+		}
+	}
+
+	&__body {
+		padding: $spacing-xl;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-lg;
+	}
+
+	&__item {
+		display: flex;
+		gap: $spacing-md;
+		align-items: flex-start;
+
+		p {
+			font-size: $font-size-base;
+			color: $color-ink-secondary;
+			line-height: 1.8;
+			word-break: keep-all;
+			flex: 1;
+
+			strong {
+				color: $color-ink;
+				font-weight: $font-weight-bold;
+			}
+		}
+	}
+
+	&__num {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		min-width: 24px;
+		background: $color-primary;
+		color: white;
+		border-radius: 50%;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		margin-top: 3px;
+		flex-shrink: 0;
+	}
+
+	&__notice {
+		display: block;
+		color: $color-ink-muted;
+		font-size: $font-size-sm;
+		font-style: italic;
+		margin-bottom: 4px;
+	}
+
+	&__emphasis {
+		display: inline;
+		margin-left: 4px;
+		color: $color-accent-dark;
+		font-weight: $font-weight-bold;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────────
+.toast {
+	position: fixed;
+	bottom: $spacing-xl;
+	left: 50%;
+	transform: translateX(-50%) translateY(16px);
+	background: $color-ink;
+	color: white;
+	padding: 13px $spacing-xl;
+	border-radius: $radius-full;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	box-shadow: $shadow-lg;
+	opacity: 0;
+	transition:
+		opacity 0.25s ease,
+		transform 0.25s ease;
+	z-index: 9999;
+	white-space: nowrap;
+	pointer-events: none;
+
+	&--visible {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	&__icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		background: $color-accent;
+		border-radius: 50%;
+		font-size: 0.6rem;
+		font-weight: $font-weight-bold;
+		flex-shrink: 0;
+	}
+}
+
+.fade-in-up {
+	animation: fadeInUp 0.32s ease both;
+}
+
+// ─── Like Button ──────────────────────────────────────────────────────────────
+.like-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2em;
+	padding: 0.2rem 0.55rem;
+	border: 1.5px solid $color-border;
+	border-radius: $radius-full;
+	background: transparent;
+	font-size: $font-size-xs;
+	color: $color-ink-muted;
+	cursor: pointer;
+	transition: all $transition-fast;
+	flex-shrink: 0;
+
+	&:hover:not(:disabled) {
+		border-color: #f4a26a;
+		color: #e07020;
+		background: #fff8f0;
+	}
+
+	&--active {
+		border-color: #f4a26a;
+		background: #fff3e0;
+		color: #e07020;
+		font-weight: $font-weight-semibold;
+		box-shadow: 0 0 0 2px rgba(#f4a26a, 0.25);
+	}
+
+	&:active:not(:disabled) {
+		transform: scale(0.92);
+	}
+
+	&:disabled {
+		cursor: default;
+		opacity: 0.5;
+	}
+
+	&__count {
+		font-weight: $font-weight-bold;
+	}
+}
+
+// ─── MVP Badges & Banners ──────────────────────────────────────────────────────
+
+// DetailPage MVP 배너 (배너 영역)
+.detail__mvp-banner {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-xs;
+	background: rgba(255, 255, 255, 0.18);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: $radius-full;
+	padding: 0.3rem 0.9rem;
+	margin-top: $spacing-sm;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(4px);
+}
+
+.detail__mvp-name {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	color: white;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-bold;
+}
+
+.detail__mvp-count {
+	font-size: $font-size-xs;
+	opacity: 0.75;
+}
+
+// RecordItem MVP 배지
+.record-item__mvp {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 2px;
+	margin-bottom: 2px;
+}
+
+.record-item__mvp-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2em;
+	font-size: 0.65rem;
+	font-weight: $font-weight-bold;
+	color: white;
+	border-radius: $radius-full;
+	padding: 0.15rem 0.5rem;
+	white-space: nowrap;
+}
+
+// BookCard MVP 배지
+.book-card__mvp {
+	margin-top: $spacing-xs;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.book-card__mvp-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2em;
+	font-size: 0.65rem;
+	font-weight: $font-weight-bold;
+	color: white;
+	border-radius: $radius-full;
+	padding: 0.15rem 0.5rem;
+}
+
+// BookCardHero MVP 배지
+.book-card-hero__mvp {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 0.2rem 0 0.3rem;
+}
+
+.book-card-hero__mvp-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2em;
+	font-size: 0.65rem;
+	font-weight: $font-weight-bold;
+	color: white;
+	border-radius: $radius-full;
+	padding: 0.15rem 0.5rem;
+	backdrop-filter: blur(4px);
+}
+
+// Hero MVP 통계
+.hero__mvp-stats {
+	margin-top: $spacing-md;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xs;
+}
+
+.hero__mvp-stats-label {
+	font-size: $font-size-xs;
+	color: rgba(255, 255, 255, 0.65);
+	font-weight: $font-weight-semibold;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.hero__mvp-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $spacing-sm;
+}
+
+.hero__mvp-chip {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+	background: rgba(255, 255, 255, 0.12);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: $radius-full;
+	padding: 0.2rem 0.6rem 0.2rem 0.3rem;
+}
+
+.hero__mvp-chip-name {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	color: white;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-bold;
+}
+
+.hero__mvp-chip-count {
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+// ─── Login Modal ───────────────────────────────────────────────────────────────
+.login-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(20, 30, 60, 0.6);
+	backdrop-filter: blur(8px);
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-md;
+}
+
+.login-card {
+	background: $color-surface;
+	border-radius: $radius-2xl;
+	box-shadow: $shadow-lg;
+	padding: $spacing-2xl;
+	width: 100%;
+	max-width: 400px;
+	text-align: center;
+
+	&--shake {
+		animation: shake 0.45s ease;
+	}
+
+	&__logo {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+		margin-bottom: $spacing-xl;
+	}
+
+	&__logo-icon {
+		font-size: 2.5rem;
+		line-height: 1;
+		margin-bottom: 0.25rem;
+	}
+
+	&__logo-title {
+		font-family: $font-display;
+		font-size: $font-size-lg;
+		font-weight: $font-weight-bold;
+		color: $color-primary;
+		letter-spacing: 0.02em;
+	}
+
+	&__logo-sub {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		letter-spacing: 0.08em;
+	}
+
+	&__title {
+		font-size: $font-size-xl;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		margin-bottom: $spacing-xs;
+	}
+
+	&__desc {
+		font-size: $font-size-sm;
+		color: $color-ink-muted;
+		margin-bottom: $spacing-lg;
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-md;
+		text-align: left;
+	}
+
+	&__field {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+	}
+
+	&__label {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semibold;
+		color: $color-ink-secondary;
+	}
+
+	&__input {
+		padding: 0.7rem $spacing-md;
+		border: 1.5px solid $color-border;
+		border-radius: $radius-md;
+		font-size: $font-size-base;
+		color: $color-ink;
+		background: $color-surface-alt;
+		transition:
+			border-color $transition-fast,
+			box-shadow $transition-fast;
+		outline: none;
+
+		&:focus {
+			border-color: $color-primary-light;
+			box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+		}
+
+		&--mono {
+			font-family: "Courier New", monospace;
+			letter-spacing: 0.15em;
+			font-size: $font-size-md;
+		}
+	}
+
+	&__error {
+		font-size: $font-size-sm;
+		color: $color-accent;
+		text-align: center;
+		margin: 0;
+	}
+
+	&__btn {
+		margin-top: $spacing-xs;
+		padding: 0.8rem;
+		background: $color-primary;
+		color: white;
+		border: none;
+		border-radius: $radius-md;
+		font-size: $font-size-base;
+		font-weight: $font-weight-semibold;
+		cursor: pointer;
+		transition:
+			background $transition-fast,
+			transform $transition-fast;
+
+		&:hover {
+			background: $color-primary-hover;
+			transform: translateY(-1px);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+	}
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	20% {
+		transform: translateX(-8px);
+	}
+	40% {
+		transform: translateX(8px);
+	}
+	60% {
+		transform: translateX(-6px);
+	}
+	80% {
+		transform: translateX(6px);
+	}
+}
+
+// ─── Header User Badge ─────────────────────────────────────────────────────────
+.header__user-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	border: none;
+	color: white;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-bold;
+	cursor: pointer;
+	transition:
+		opacity $transition-fast,
+		transform $transition-fast;
+	flex-shrink: 0;
+
+	&:hover {
+		opacity: 0.82;
+		transform: scale(1.08);
+	}
+}
+
+// ─── Chapter Badge ─────────────────────────────────────────────────────────────
+
+// DetailPage — 제목 바로 아래 챕터 표시
+.detail__chapter {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-xs;
+	background: rgba(255, 255, 255, 0.18);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: $radius-full;
+	padding: 0.3rem 0.9rem;
+	margin-bottom: $spacing-sm;
+	backdrop-filter: blur(4px);
+
+	.detail__chapter-label {
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: rgba(255, 255, 255, 0.75);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.detail__chapter-value {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semibold;
+		color: #ffffff;
+		letter-spacing: 0.01em;
+	}
+}
+
+// RecordItem (리스트 뷰) — 제목 아래 별도 줄 배지
+.record-item__chapter {
+	display: inline-block;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-accent-dark;
+	background: $color-accent-pale;
+	border: 1px solid rgba($color-accent, 0.2);
+	border-radius: $radius-full;
+	padding: 0.15rem 0.55rem;
+	margin: 0.2rem 0 0.15rem;
+	white-space: nowrap;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// BookCard (그리드 뷰) — 제목 아래
+.book-card__chapter {
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-accent-dark;
+	background: $color-accent-pale;
+	border: 1px solid rgba($color-accent, 0.2);
+	border-radius: $radius-full;
+	display: inline-block;
+	padding: 0.2rem 0.6rem;
+	margin: 0.25rem 0 0.2rem;
+}
+
+// BookCardHero (최근 모임 카드) — 제목 아래
+.book-card-hero__chapter {
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-accent-dark;
+	background: rgba(255, 255, 255, 0.22);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	border-radius: $radius-full;
+	display: inline-block;
+	padding: 0.2rem 0.7rem;
+	margin: 0.3rem 0 0.4rem;
+	backdrop-filter: blur(4px);
+}
