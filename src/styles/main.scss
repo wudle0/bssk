@@ -16,8 +16,16 @@
 	margin: 0 auto;
 	padding: 0 $spacing-xl;
 
+	@media (max-width: $bp-md) {
+		padding: 0 $spacing-lg;
+	}
+
 	@media (max-width: $bp-sm) {
 		padding: 0 $spacing-md;
+	}
+
+	@media (max-width: 360px) {
+		padding: 0 $spacing-sm;
 	}
 }
 
@@ -2679,4 +2687,84 @@
 	padding: 0.2rem 0.7rem;
 	margin: 0.3rem 0 0.4rem;
 	backdrop-filter: blur(4px);
+}
+
+// ─── Global Responsive ────────────────────────────────────────────────────────
+
+// ── 태블릿 (≤768px) ──────────────────────────────────────────────────────────
+@media (max-width: $bp-md) {
+	// 그리드 2열
+	.record-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+// ── 모바일 (≤480px) ──────────────────────────────────────────────────────────
+@media (max-width: $bp-sm) {
+
+	// 헤더 — 로고 서브 숨김, 버튼 축소
+	.header__logo-sub  { display: none; }
+	.header__logo-title { font-size: $font-size-sm; }
+
+	.header__btn {
+		padding: 7px 13px;
+		font-size: $font-size-xs;
+	}
+
+	.header__user-badge {
+		width: 28px;
+		height: 28px;
+		font-size: 0.7rem;
+	}
+
+	// 그리드 1열
+	.record-grid {
+		grid-template-columns: 1fr;
+	}
+
+	// 히어로 MVP 통계 정렬
+	.hero__mvp-stats  { align-items: center; }
+	.hero__mvp-chips  { justify-content: center; }
+	.hero__stats      { justify-content: center; }
+
+	// 디테일 — body 패딩 축소, 배너 패딩 축소
+	.detail__body   { padding: $spacing-lg; }
+	.detail .detail__banner { padding: $spacing-lg; }
+
+	// 디테일 — 표지 float 해제, 중앙 정렬
+	.detail__cover-wrap {
+		float: none !important;
+		margin: 0 auto $spacing-md !important;
+		width: 100px;
+	}
+
+	// 디테일 정보 그리드 2열
+	.detail__info-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	// 폼 단일 컬럼
+	.form__grid { grid-template-columns: 1fr; }
+	.form__field--full { grid-column: 1; }
+
+	// 최근 모임 카드 — 표지 숨김
+	.book-card-hero__cover-wrap { display: none; }
+	.book-card-hero__body { padding-right: $spacing-lg; }
+}
+
+// ── 소형 모바일 (≤380px) ─────────────────────────────────────────────────────
+@media (max-width: 380px) {
+
+	// 헤더 버튼 텍스트 숨기고 이모지만 표시
+	.header__btn-text { display: none; }
+
+	.header__btn {
+		padding: 7px 10px;
+	}
+
+	// 리스트 — 날짜 숨김, 패딩 축소
+	.record-item__date { display: none; }
+	.record-item {
+		padding: $spacing-sm $spacing-md;
+	}
 }

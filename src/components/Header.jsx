@@ -23,22 +23,22 @@ export default function Header() {
 					<nav className="header__nav">
 						{!isHome && (
 							<button className="header__btn header__btn--ghost" onClick={() => navigate("/")}>
-								← 목록
+								← <span className="header__btn-text">목록</span>
 							</button>
 						)}
 						{isEdit ? (
 							<button type="submit" form="edit-form" className="header__btn header__btn--write">
-								✅ 수정 완료
+								✅ <span className="header__btn-text">수정 완료</span>
 							</button>
 						) : isDetail ? (
 							<button
 								className="header__btn header__btn--write"
 								onClick={() => navigate(`/edit/${id}`)}>
-								✏️ 기록 수정하기
+								✏️ <span className="header__btn-text">수정하기</span>
 							</button>
 						) : (
 							<button className="header__btn header__btn--write" onClick={() => navigate("/write")}>
-								✏️ 기록 등록
+								✏️ <span className="header__btn-text">기록 등록</span>
 							</button>
 						)}
 						{user && (
