@@ -49,15 +49,25 @@ export default function WritePage() {
 	const [hour, setHour] = useState("");
 	const dateInitialized = useRef(false);
 
-	// records 로딩 완료 후 no 기준 최신 기록의 날짜를 기본값으로 설정
+	// records 로딩 완료 후 최신 기록 기반으로 날짜·발제자 기본값 설정
 	useEffect(() => {
 		if (dateInitialized.current || records.length === 0) return;
 		const latest = records.reduce((a, b) => (a.no > b.no ? a : b));
+
+		// 날짜 기본값
 		if (latest?.discussionDate) {
 			const { date, hour } = parseDate(latest.discussionDate);
 			setDateStr(date);
 			setHour(hour);
 		}
+
+		// 발제자 기본값: 이전 발제자의 다음 순서
+		if (latest?.presenter) {
+			const idx = MEMBERS.indexOf(latest.presenter);
+			const nextPresenter = idx >= 0 ? MEMBERS[(idx + 1) % MEMBERS.length] : MEMBERS[0];
+			setForm((prev) => ({ ...prev, presenter: nextPresenter }));
+		}
+
 		dateInitialized.current = true;
 	}, [records]);
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
