@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecords } from "../context/RecordsContext";
 import { useToast } from "../App";
@@ -22,6 +22,15 @@ export default function WritePage() {
 
 	const nextNo = records.length > 0 ? Math.max(...records.map((r) => r.no || 0)) + 1 : 1;
 
+	function parseDate(isoStr) {
+		if (!isoStr) return { date: "", hour: "" };
+		const d = new Date(isoStr);
+		const pad = (n) => String(n).padStart(2, "0");
+		const date = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+		const hour = d.getHours() === 0 && d.getMinutes() === 0 ? "" : String(d.getHours());
+		return { date, hour };
+	}
+
 	const [form, setForm] = useState({
 		no: nextNo,
 		book: "",
@@ -38,6 +47,19 @@ export default function WritePage() {
 
 	const [dateStr, setDateStr] = useState("");
 	const [hour, setHour] = useState("");
+	const dateInitialized = useRef(false);
+
+	// records 로딩 완료 후 no 기준 최신 기록의 날짜를 기본값으로 설정
+	useEffect(() => {
+		if (dateInitialized.current || records.length === 0) return;
+		const latest = records.reduce((a, b) => (a.no > b.no ? a : b));
+		if (latest?.discussionDate) {
+			const { date, hour } = parseDate(latest.discussionDate);
+			setDateStr(date);
+			setHour(hour);
+		}
+		dateInitialized.current = true;
+	}, [records]);
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [errors, setErrors] = useState({});
 	const dateRef = useRef(null);
