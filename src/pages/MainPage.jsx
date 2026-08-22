@@ -4,11 +4,10 @@ import { useRecords } from "../context/RecordsContext";
 import BookCard from "../components/BookCard";
 import BookCardHero from "../components/BookCardHero";
 import GuidelineModal from "../components/GuidelineModal";
+import CalendarModal from "../components/CalendarModal";
 import {
-	isThisWeek,
 	isThisTwoWeeks,
 	formatShortDate,
-	getCurrentWeekLabel,
 	getMVP,
 	getMVPStats,
 	getMemberByKey,
@@ -19,11 +18,21 @@ export default function MainPage() {
 	const navigate = useNavigate();
 	const { records, loading } = useRecords();
 	const [showGuideline, setShowGuideline] = useState(false);
+	const [showCalendar, setShowCalendar] = useState(false);
 	const [viewMode, setViewMode] = useState(() => localStorage.getItem("viewMode") || "list");
+	const [pageSize, setPageSize] = useState(() => Number(localStorage.getItem("pageSize")) || 50);
+	const [currentPage, setCurrentPage] = useState(1);
 
 	const toggleView = (mode) => {
 		setViewMode(mode);
 		localStorage.setItem("viewMode", mode);
+		setCurrentPage(1);
+	};
+
+	const changePageSize = (size) => {
+		setPageSize(size);
+		localStorage.setItem("pageSize", size);
+		setCurrentPage(1);
 	};
 
 	// No 내림차순, 같은 No면 등록일 내림차순
@@ -50,7 +59,17 @@ export default function MainPage() {
 		.filter((r) => isThisTwoWeeks(r.discussionDate))
 		.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
+	// 다음 모임 — 오늘 이후 날짜 중 가장 가까운 1건
+	const now = new Date();
+	now.setHours(0, 0, 0, 0);
+	const nextMeetingRecord = records
+		.filter((r) => r.discussionDate && new Date(r.discussionDate) >= now)
+		.sort((a, b) => new Date(a.discussionDate) - new Date(b.discussionDate))[0] ?? null;
+
 	const mvpStats = getMVPStats(records);
+
+	const totalPages = Math.ceil(sortedRecords.length / pageSize) || 1;
+	const pagedRecords = sortedRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
 	if (loading) {
 		return (
@@ -101,10 +120,10 @@ export default function MainPage() {
 										<div className="hero__stat-num">{records.length}</div>
 										<div className="hero__stat-label">총 기록</div>
 									</div>
-									<div className="hero__stat">
-										<div className="hero__stat-num">{thisWeekRecords.length}</div>
-										<div className="hero__stat-label">이번 주</div>
-									</div>
+								<div className="hero__stat">
+									<div className="hero__stat-num">{nextMeetingRecord ? "D-" + Math.floor((new Date(nextMeetingRecord.discussionDate) - new Date().setHours(0,0,0,0)) / (1000*60*60*24)) : "—"}</div>
+									<div className="hero__stat-label">다음 모임</div>
+								</div>
 									<div className="hero__stat">
 										<div className="hero__stat-num">4</div>
 										<div className="hero__stat-label">멤버</div>
@@ -140,33 +159,52 @@ export default function MainPage() {
 
 				<div className="container">
 					<div className="main-sections">
-						{/* 이 주의 책 */}
-						<section className="this-week">
-							<div className="this-week__heading">
-								<div className="this-week__label-group">
-									<span className="this-week__badge">
-										<span className="this-week__badge-dot" />
-										최근 모임
-									</span>
-									<span className="this-week__week-label">{getCurrentWeekLabel()}</span>
-								</div>
+					{/* 다음 모임 */}
+					<section className="this-week">
+						<div className="this-week__heading" style={{ justifyContent: 'space-between' }}>
+							<div className="this-week__label-group">
+								<span className="this-week__badge">
+									<span className="this-week__badge-dot" />
+									다음 모임
+									{nextMeetingRecord && (() => {
+										const today = new Date(); today.setHours(0,0,0,0);
+										const meet = new Date(nextMeetingRecord.discussionDate); meet.setHours(0,0,0,0);
+										const diff = Math.floor((meet - today) / (1000*60*60*24));
+										return (
+											<>
+												<span className="this-week__badge-sep">·</span>
+												<span className="this-week__badge-date">
+													{formatShortDate(nextMeetingRecord.discussionDate)}
+												</span>
+												<span className="this-week__badge-dday">
+													{diff === 0 ? 'D-Day' : `D-${diff}`}
+												</span>
+											</>
+										);
+									})()}
+								</span>
 							</div>
+							<button
+								className="cal-open-btn"
+								onClick={() => setShowCalendar(true)}
+								title="캘린더 보기">
+								📅
+							</button>
+						</div>
 
-							{thisWeekRecords.length === 0 ? (
-								<div className="this-week__empty">
-									<span className="this-week__empty-emoji">📚</span>
-									최근 2주 내 토론 기록이 없어요.{" "}
-									<span className="this-week__empty-link" onClick={() => navigate("/write")}>
-										기록을 등록해보세요!
-									</span>
-								</div>
-							) : (
-								<div className="this-week__list">
-									{thisWeekRecords.map((record) => (
-										<BookCardHero key={record.id} record={record} />
-									))}
-								</div>
-							)}
+						{!nextMeetingRecord ? (
+							<div className="this-week__empty">
+								<span className="this-week__empty-emoji">📅</span>
+								예정된 다음 모임이 없어요.{" "}
+								<span className="this-week__empty-link" onClick={() => navigate("/write")}>
+									기록을 등록해보세요!
+								</span>
+							</div>
+						) : (
+							<div className="this-week__list">
+								<BookCardHero record={nextMeetingRecord} />
+							</div>
+						)}
 						</section>
 
 						<div className="section-divider" />
@@ -178,19 +216,29 @@ export default function MainPage() {
 									전체 기록
 									<span className="record-section__count">{sortedRecords.length}편</span>
 								</div>
-								<div className="view-toggle">
-									<button
-										className={`view-toggle__btn ${viewMode === "list" ? "view-toggle__btn--active" : ""}`}
-										onClick={() => toggleView("list")}
-										title="리스트 보기">
-										☰
-									</button>
-									<button
-										className={`view-toggle__btn ${viewMode === "grid" ? "view-toggle__btn--active" : ""}`}
-										onClick={() => toggleView("grid")}
-										title="바둑판 보기">
-										⊞
-									</button>
+								<div className="record-section__controls">
+									<select
+										className="page-size-select"
+										value={pageSize}
+										onChange={(e) => changePageSize(Number(e.target.value))}>
+										{[10, 20, 30, 50, 100].map((n) => (
+											<option key={n} value={n}>{n}개씩 보기</option>
+										))}
+									</select>
+									<div className="view-toggle">
+										<button
+											className={`view-toggle__btn ${viewMode === "list" ? "view-toggle__btn--active" : ""}`}
+											onClick={() => toggleView("list")}
+											title="리스트 보기">
+											☰
+										</button>
+										<button
+											className={`view-toggle__btn ${viewMode === "grid" ? "view-toggle__btn--active" : ""}`}
+											onClick={() => toggleView("grid")}
+											title="바둑판 보기">
+											⊞
+										</button>
+									</div>
 								</div>
 							</div>
 
@@ -202,13 +250,13 @@ export default function MainPage() {
 								</div>
 							) : viewMode === "grid" ? (
 								<div className="record-grid">
-									{sortedRecords.map((record) => (
+									{pagedRecords.map((record) => (
 										<BookCard key={record.id} record={record} />
 									))}
 								</div>
 							) : (
 								<div className="record-list">
-									{sortedRecords.map((record) => (
+									{pagedRecords.map((record) => (
 										<RecordItem
 											key={record.id}
 											record={record}
@@ -217,12 +265,62 @@ export default function MainPage() {
 									))}
 								</div>
 							)}
+
+							{/* 페이지네이션 */}
+							{totalPages > 1 && (
+								<div className="pagination">
+									<button
+										className="pagination__btn"
+										onClick={() => setCurrentPage(1)}
+										disabled={currentPage === 1}>
+										«
+									</button>
+									<button
+										className="pagination__btn"
+										onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+										disabled={currentPage === 1}>
+										‹
+									</button>
+									{Array.from({ length: totalPages }, (_, i) => i + 1)
+										.filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2)
+										.reduce((acc, p, idx, arr) => {
+											if (idx > 0 && p - arr[idx - 1] > 1) acc.push('…');
+											acc.push(p);
+											return acc;
+										}, [])
+										.map((p, i) =>
+											p === '…' ? (
+												<span key={`ellipsis-${i}`} className="pagination__ellipsis">…</span>
+											) : (
+												<button
+													key={p}
+													className={`pagination__btn${currentPage === p ? ' pagination__btn--active' : ''}`}
+													onClick={() => setCurrentPage(p)}>
+													{p}
+												</button>
+											)
+										)}
+									<button
+										className="pagination__btn"
+										onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+										disabled={currentPage === totalPages}>
+										›
+									</button>
+									<button
+										className="pagination__btn"
+										onClick={() => setCurrentPage(totalPages)}
+										disabled={currentPage === totalPages}>
+										»
+									</button>
+								</div>
+							)}
 						</section>
 					</div>
 				</div>
 			</main>
 
 			{showGuideline && <GuidelineModal onClose={() => setShowGuideline(false)} />}
+		{showCalendar && <CalendarModal records={records} onClose={() => setShowCalendar(false)} />}
 		</>
 	);
 }

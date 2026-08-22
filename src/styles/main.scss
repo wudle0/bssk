@@ -369,7 +369,7 @@
 	&__badge {
 		display: inline-flex;
 		align-items: center;
-		gap: 7px;
+		gap: 6px;
 		padding: 6px 16px;
 		background: $color-primary;
 		color: white;
@@ -379,6 +379,7 @@
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		box-shadow: $shadow-pop;
+		flex-wrap: nowrap;
 
 		&-dot {
 			width: 7px;
@@ -387,6 +388,28 @@
 			background: $color-accent;
 			animation: pulse 1.8s ease-in-out infinite;
 			flex-shrink: 0;
+		}
+
+		&-sep {
+			opacity: 0.45;
+			font-weight: $font-weight-regular;
+		}
+
+		&-date {
+			opacity: 0.85;
+			font-weight: $font-weight-semibold;
+			letter-spacing: 0.02em;
+			text-transform: none;
+		}
+
+		&-dday {
+			background: $color-accent;
+			border-radius: $radius-full;
+			padding: 1px 8px;
+			font-size: 0.65rem;
+			font-weight: $font-weight-bold;
+			letter-spacing: 0.04em;
+			white-space: nowrap;
 		}
 	}
 
@@ -504,9 +527,11 @@
 
 	&__body {
 		padding: $spacing-xl;
+		padding-right: 120px; // 표지 영역(80px) + 우측 여백 확보
 		display: flex;
 		flex-direction: column;
 		position: relative;
+		min-height: 160px;
 	}
 
 	&__stripe {
@@ -514,7 +539,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 3px;
+		height: 4px;
 	}
 
 	&__no {
@@ -523,16 +548,16 @@
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		margin-top: $spacing-xs;
-		margin-bottom: $spacing-sm;
+		margin-bottom: $spacing-xs;
 	}
 
 	&__title {
 		font-size: $font-size-xl;
 		font-weight: $font-weight-bold;
 		color: $color-ink;
-		line-height: 1.35;
+		line-height: 1.3;
 		letter-spacing: -0.02em;
-		margin-bottom: $spacing-sm;
+		margin-bottom: 2px;
 		word-break: keep-all;
 
 		@media (max-width: $bp-sm) {
@@ -540,27 +565,51 @@
 		}
 	}
 
-	&__topic {
+	&__author {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+		margin-bottom: $spacing-sm;
+	}
+
+	// 화두 목록
+	&__topics {
+		margin: $spacing-sm 0;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	&__topic-label {
+		display: block;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		color: $color-ink-muted;
+		letter-spacing: 0.06em;
+		margin-bottom: 4px;
+	}
+
+	&__topic-item {
+		display: flex;
+		align-items: baseline;
+		gap: $spacing-xs;
 		font-size: $font-size-sm;
 		color: $color-ink-secondary;
-		line-height: 1.6;
-		margin-bottom: auto;
-		padding: $spacing-sm $spacing-md;
-		background: $color-bg;
-		border-radius: $radius-md;
-		border-left: 2px solid $color-accent;
+		line-height: 1.55;
 		word-break: keep-all;
-		flex: 1;
+	}
 
-		&-label {
-			display: inline-block;
-			font-size: $font-size-xs;
-			font-weight: $font-weight-bold;
-			color: $color-ink-muted;
-			text-transform: uppercase;
-			letter-spacing: 0.08em;
-			margin-right: $spacing-sm;
-		}
+	&__topic-num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		background: $color-accent;
+		color: white;
+		font-size: 0.6rem;
+		font-weight: $font-weight-bold;
+		flex-shrink: 0;
 	}
 
 	&__footer {
@@ -568,8 +617,8 @@
 		flex-wrap: wrap;
 		gap: $spacing-xs;
 		align-items: center;
-		padding-top: $spacing-md;
-		margin-top: $spacing-md;
+		padding-top: $spacing-sm;
+		margin-top: auto;
 		border-top: 1px solid $color-border-light;
 	}
 
@@ -774,6 +823,81 @@
 		background: $color-primary-pale;
 		padding: 2px 10px;
 		border-radius: $radius-full;
+	}
+}
+
+// ── 섹션 타이틀 컨트롤 영역 ──
+.record-section__controls {
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+}
+
+.page-size-select {
+	padding: 5px 10px;
+	border: 1px solid $color-border;
+	border-radius: $radius-md;
+	background: $color-bg-warm;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-ink-secondary;
+	cursor: pointer;
+	outline: none;
+	transition: border-color $transition-fast;
+
+	&:hover, &:focus {
+		border-color: $color-primary-light;
+	}
+}
+
+// ── 페이지네이션 ──
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-xs;
+	margin-top: $spacing-xl;
+	padding-bottom: $spacing-lg;
+
+	&__btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 34px;
+		height: 34px;
+		padding: 0 $spacing-xs;
+		border: 1.5px solid $color-border;
+		border-radius: $radius-md;
+		background: white;
+		color: $color-ink-secondary;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semibold;
+		cursor: pointer;
+		transition: all $transition-fast;
+
+		&:hover:not(:disabled) {
+			border-color: $color-primary-light;
+			color: $color-primary;
+			background: $color-primary-pale;
+		}
+
+		&--active {
+			background: $color-primary;
+			border-color: $color-primary;
+			color: white;
+			box-shadow: $shadow-pop;
+		}
+
+		&:disabled {
+			opacity: 0.35;
+			cursor: default;
+		}
+	}
+
+	&__ellipsis {
+		color: $color-ink-muted;
+		padding: 0 4px;
+		font-size: $font-size-sm;
 	}
 }
 
@@ -2048,13 +2172,13 @@
 .book-card-hero__top {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	margin-bottom: $spacing-sm;
+	margin-bottom: $spacing-xs;
 }
 
 .book-card-hero__emoji {
-	font-size: 1.5rem;
+	font-size: 1rem;
 	line-height: 1;
+	margin-left: 6px;
 }
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
@@ -2443,6 +2567,244 @@
 	}
 }
 
+// ─── Calendar Open Button ─────────────────────────────────────────────────────
+.cal-open-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border: 1.5px solid $color-border;
+	border-radius: $radius-md;
+	background: white;
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: all $transition-fast;
+	flex-shrink: 0;
+
+	&:hover {
+		border-color: $color-primary-light;
+		background: $color-primary-pale;
+		transform: scale(1.05);
+	}
+}
+
+// ─── Calendar Modal ───────────────────────────────────────────────────────────
+.cal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(20, 30, 60, 0.45);
+	backdrop-filter: blur(6px);
+	z-index: 600;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-md;
+}
+
+.cal-modal {
+	background: $color-surface;
+	border-radius: $radius-2xl;
+	box-shadow: $shadow-lg;
+	width: 100%;
+	max-width: 380px;
+	overflow: hidden;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+		padding: $spacing-lg $spacing-lg $spacing-md;
+		border-bottom: 1px solid $color-border-light;
+	}
+
+	&__title {
+		flex: 1;
+		display: flex;
+		align-items: baseline;
+		gap: $spacing-sm;
+		justify-content: center;
+	}
+
+	&__year {
+		font-size: $font-size-sm;
+		color: $color-ink-muted;
+		font-weight: $font-weight-semibold;
+	}
+
+	&__month {
+		font-size: $font-size-xl;
+		font-weight: $font-weight-bold;
+		color: $color-ink;
+		letter-spacing: -0.02em;
+	}
+
+	&__today-btn {
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: $color-primary-light;
+		background: $color-primary-pale;
+		border: 1px solid $color-border;
+		border-radius: $radius-full;
+		padding: 2px 8px;
+		cursor: pointer;
+		transition: all $transition-fast;
+
+		&:hover {
+			background: $color-primary;
+			color: white;
+		}
+	}
+
+	&__nav {
+		width: 32px;
+		height: 32px;
+		border: 1.5px solid $color-border;
+		border-radius: $radius-md;
+		background: white;
+		font-size: $font-size-lg;
+		color: $color-ink-secondary;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all $transition-fast;
+		flex-shrink: 0;
+
+		&:hover {
+			border-color: $color-primary-light;
+			color: $color-primary;
+			background: $color-primary-pale;
+		}
+	}
+
+	&__close {
+		width: 28px;
+		height: 28px;
+		border: none;
+		background: transparent;
+		color: $color-ink-muted;
+		font-size: $font-size-base;
+		cursor: pointer;
+		border-radius: $radius-md;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all $transition-fast;
+		flex-shrink: 0;
+
+		&:hover {
+			background: $color-bg-warm;
+			color: $color-ink;
+		}
+	}
+
+	&__legend {
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: $spacing-sm $spacing-lg $spacing-md;
+		border-top: 1px solid $color-border-light;
+	}
+}
+
+.cal-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+
+	&--header {
+		padding: $spacing-sm $spacing-md 0;
+	}
+
+	&--body {
+		padding: 0 $spacing-md $spacing-sm;
+		gap: 2px;
+	}
+}
+
+.cal-weekday {
+	text-align: center;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-bold;
+	color: $color-ink-muted;
+	padding: $spacing-xs 0;
+	letter-spacing: 0.04em;
+
+	&--sun { color: #e53e3e; }
+	&--sat { color: #3d5a90; }
+}
+
+.cal-cell {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 4px 2px 6px;
+	border-radius: $radius-md;
+	min-height: 44px;
+	transition: background $transition-fast;
+
+	&--empty { pointer-events: none; }
+
+	&--clickable {
+		cursor: pointer;
+		&:hover { background: $color-primary-pale; }
+	}
+
+	&--today &__day {
+		background: $color-primary;
+		color: white;
+		border-radius: 50%;
+		width: 26px;
+		height: 26px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&--sun &__day { color: #e53e3e; }
+	&--sat &__day { color: #3d5a90; }
+	// 오늘이면서 일/토인 경우 흰색 유지 (today 배경이 우선)
+	&--today &__day { color: white !important; }
+
+	&__day {
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: $color-ink;
+		width: 26px;
+		height: 26px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+	}
+
+	&__dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: #e53e3e;
+		margin-top: 2px;
+		flex-shrink: 0;
+	}
+}
+
+.cal-legend {
+	&__dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: #e53e3e;
+		flex-shrink: 0;
+	}
+
+	&__label {
+		font-size: $font-size-xs;
+		color: $color-ink-muted;
+	}
+}
+
 // ─── Login Modal ───────────────────────────────────────────────────────────────
 .login-overlay {
 	position: fixed;
@@ -2777,12 +3139,12 @@
 		grid-column: 1;
 	}
 
-	// 최근 모임 카드 — 표지 숨김
+	// 다음 모임 카드 — 표지 숨기고 패딩 복구
 	.book-card-hero__cover-wrap {
 		display: none;
 	}
 	.book-card-hero__body {
-		padding-right: $spacing-lg;
+		padding-right: $spacing-xl;
 	}
 }
 
