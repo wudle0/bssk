@@ -21,18 +21,23 @@ export default function MainPage() {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const [viewMode, setViewMode] = useState(() => localStorage.getItem("viewMode") || "list");
 	const [pageSize, setPageSize] = useState(() => Number(localStorage.getItem("pageSize")) || 50);
-	const [currentPage, setCurrentPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState(() => Number(sessionStorage.getItem("currentPage")) || 1);
+
+	const goToPage = (page) => {
+		setCurrentPage(page);
+		sessionStorage.setItem("currentPage", page);
+	};
 
 	const toggleView = (mode) => {
 		setViewMode(mode);
 		localStorage.setItem("viewMode", mode);
-		setCurrentPage(1);
+		goToPage(1);
 	};
 
 	const changePageSize = (size) => {
 		setPageSize(size);
 		localStorage.setItem("pageSize", size);
-		setCurrentPage(1);
+		goToPage(1);
 	};
 
 	// No 내림차순, 같은 No면 등록일 내림차순
@@ -269,49 +274,49 @@ export default function MainPage() {
 							{/* 페이지네이션 */}
 							{totalPages > 1 && (
 								<div className="pagination">
-									<button
-										className="pagination__btn"
-										onClick={() => setCurrentPage(1)}
-										disabled={currentPage === 1}>
-										«
-									</button>
-									<button
-										className="pagination__btn"
-										onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-										disabled={currentPage === 1}>
-										‹
-									</button>
-									{Array.from({ length: totalPages }, (_, i) => i + 1)
-										.filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2)
-										.reduce((acc, p, idx, arr) => {
-											if (idx > 0 && p - arr[idx - 1] > 1) acc.push('…');
-											acc.push(p);
-											return acc;
-										}, [])
-										.map((p, i) =>
-											p === '…' ? (
-												<span key={`ellipsis-${i}`} className="pagination__ellipsis">…</span>
-											) : (
-												<button
-													key={p}
-													className={`pagination__btn${currentPage === p ? ' pagination__btn--active' : ''}`}
-													onClick={() => setCurrentPage(p)}>
-													{p}
-												</button>
-											)
-										)}
-									<button
-										className="pagination__btn"
-										onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-										disabled={currentPage === totalPages}>
-										›
-									</button>
-									<button
-										className="pagination__btn"
-										onClick={() => setCurrentPage(totalPages)}
-										disabled={currentPage === totalPages}>
-										»
-									</button>
+								<button
+									className="pagination__btn"
+									onClick={() => goToPage(1)}
+									disabled={currentPage === 1}>
+									«
+								</button>
+								<button
+									className="pagination__btn"
+									onClick={() => goToPage(Math.max(1, currentPage - 1))}
+									disabled={currentPage === 1}>
+									‹
+								</button>
+								{Array.from({ length: totalPages }, (_, i) => i + 1)
+									.filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2)
+									.reduce((acc, p, idx, arr) => {
+										if (idx > 0 && p - arr[idx - 1] > 1) acc.push('…');
+										acc.push(p);
+										return acc;
+									}, [])
+									.map((p, i) =>
+										p === '…' ? (
+											<span key={`ellipsis-${i}`} className="pagination__ellipsis">…</span>
+										) : (
+											<button
+												key={p}
+												className={`pagination__btn${currentPage === p ? ' pagination__btn--active' : ''}`}
+												onClick={() => goToPage(p)}>
+												{p}
+											</button>
+										)
+									)}
+								<button
+									className="pagination__btn"
+									onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
+									disabled={currentPage === totalPages}>
+									›
+								</button>
+								<button
+									className="pagination__btn"
+									onClick={() => goToPage(totalPages)}
+									disabled={currentPage === totalPages}>
+									»
+								</button>
 								</div>
 							)}
 						</section>

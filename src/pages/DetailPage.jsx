@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useRecords } from "../context/RecordsContext";
 import { useUser } from "../context/UserContext";
@@ -7,10 +7,38 @@ import { formatDate, isThisWeek, getMemberByKey, getLikeCount, getUserLike, getM
 export default function DetailPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const { getRecord, deleteRecord, updateRecord } = useRecords();
+	const { records, getRecord, deleteRecord, updateRecord } = useRecords();
 	const { user } = useUser();
 
 	const record = getRecord(id);
+
+	// 사이드바 접기 상태
+	const [sidebarCollapsed, setSidebarCollapsed] = useState(
+		() => localStorage.getItem("sidebarCollapsed") === "true"
+	);
+	const toggleSidebar = () => {
+		setSidebarCollapsed((prev) => {
+			localStorage.setItem("sidebarCollapsed", !prev);
+			return !prev;
+		});
+	};
+
+	// 현재 활성 항목으로 사이드바 자동 스크롤
+	useEffect(() => {
+		if (!sidebarCollapsed) {
+			const el = document.querySelector(".detail-sidebar__item--active");
+			if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+		}
+	}, [id, sidebarCollapsed]);
+
+	// 사이드바용 정렬된 전체 기록
+	const sortedRecords = [...records].sort((a, b) => {
+		if (b.no !== a.no) return b.no - a.no;
+		return new Date(b.createdAt) - new Date(a.createdAt);
+	});
+	const currentIdx = sortedRecords.findIndex((r) => r.id === id);
+	const prevRecord = currentIdx < sortedRecords.length - 1 ? sortedRecords[currentIdx + 1] : null;
+	const nextRecord = currentIdx > 0 ? sortedRecords[currentIdx - 1] : null;
 
 	// 인라인 의견 수정 상태: { name, topicIdx }
 	const [editing, setEditing] = useState(null);
@@ -87,8 +115,45 @@ export default function DetailPage() {
 
 	return (
 		<main className="page-content">
-			<div className="container">
-				<div className="detail">
+			<div className={`detail-layout${sidebarCollapsed ? ' detail-layout--collapsed' : ''}`}>
+				{/* PC 사이드바 */}
+				<aside className={`detail-sidebar${sidebarCollapsed ? ' detail-sidebar--collapsed' : ''}`}>
+					{/* 헤더 (스크롤 안 됨) */}
+					<div className="detail-sidebar__header">
+						{!sidebarCollapsed && <span className="detail-sidebar__heading">전체 기록</span>}
+						<button
+							className="detail-sidebar__toggle"
+							onClick={toggleSidebar}
+							title={sidebarCollapsed ? '목록 펼치기' : '목록 접기'}
+						>
+							{sidebarCollapsed ? '›' : '‹'}
+						</button>
+					</div>
+
+					{/* 스크롤 가능한 목록 */}
+					<div className="detail-sidebar__inner">
+						{sortedRecords.map((r) => {
+							const isActive = r.id === id;
+							const mvp = getMVP(r);
+							return (
+								<div
+									key={r.id}
+									className={`detail-sidebar__item${isActive ? ' detail-sidebar__item--active' : ''}`}
+									onClick={() => !isActive && navigate(`/detail/${r.id}`)}
+								>
+									<span className="detail-sidebar__no">No.{r.no}</span>
+									<span className="detail-sidebar__title">{r.book}</span>
+									{mvp && <span className="detail-sidebar__mvp">🏆</span>}
+								</div>
+							);
+						})}
+					</div>
+				</aside>
+
+				{/* 메인 콘텐츠 */}
+				<div className="detail-main">
+					<div className="container">
+						<div className="detail">
 					{/* 상단 배너 */}
 					<div className="detail__card">
 						<div className="detail__banner">
@@ -325,10 +390,31 @@ export default function DetailPage() {
 									기록 수정
 								</button>
 							</div>
-						</div>
-					</div>
+
+						</div>{/* detail__body */}
+					</div>{/* detail__card */}
+				</div>{/* detail */}
+
+				{/* 모바일 이전/다음 버튼 */}
+				<div className="detail-prev-next">
+					<button
+						className="detail-prev-next__btn"
+						onClick={() => prevRecord && navigate(`/detail/${prevRecord.id}`)}
+						disabled={!prevRecord}
+					>
+						← {prevRecord ? `No.${prevRecord.no} ${prevRecord.book}` : '이전 글 없음'}
+					</button>
+					<button
+						className="detail-prev-next__btn detail-prev-next__btn--next"
+						onClick={() => nextRecord && navigate(`/detail/${nextRecord.id}`)}
+						disabled={!nextRecord}
+					>
+						{nextRecord ? `No.${nextRecord.no} ${nextRecord.book}` : '다음 글 없음'} →
+					</button>
 				</div>
-			</div>
-		</main>
+			</div>{/* container */}
+		</div>{/* detail-main */}
+	</div>{/* /detail-layout */}
+</main>
 	);
 }
