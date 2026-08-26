@@ -315,6 +315,7 @@
 			color: rgba(255, 255, 255, 0.55);
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
+			font-weight: $font-weight-semibold;
 		}
 	}
 }
@@ -845,7 +846,8 @@
 	outline: none;
 	transition: border-color $transition-fast;
 
-	&:hover, &:focus {
+	&:hover,
+	&:focus {
 		border-color: $color-primary-light;
 	}
 }
@@ -2934,8 +2936,12 @@ $sidebar-collapsed-width: 40px;
 	padding: $spacing-xs 0;
 	letter-spacing: 0.04em;
 
-	&--sun { color: #e53e3e; }
-	&--sat { color: #3d5a90; }
+	&--sun {
+		color: #e53e3e;
+	}
+	&--sat {
+		color: #3d5a90;
+	}
 }
 
 .cal-cell {
@@ -2949,11 +2955,15 @@ $sidebar-collapsed-width: 40px;
 	min-height: 44px;
 	transition: background $transition-fast;
 
-	&--empty { pointer-events: none; }
+	&--empty {
+		pointer-events: none;
+	}
 
 	&--clickable {
 		cursor: pointer;
-		&:hover { background: $color-primary-pale; }
+		&:hover {
+			background: $color-primary-pale;
+		}
 	}
 
 	&--today &__day {
@@ -2967,10 +2977,16 @@ $sidebar-collapsed-width: 40px;
 		justify-content: center;
 	}
 
-	&--sun &__day { color: #e53e3e; }
-	&--sat &__day { color: #3d5a90; }
+	&--sun &__day {
+		color: #e53e3e;
+	}
+	&--sat &__day {
+		color: #3d5a90;
+	}
 	// 오늘이면서 일/토인 경우 흰색 유지 (today 배경이 우선)
-	&--today &__day { color: white !important; }
+	&--today &__day {
+		color: white !important;
+	}
 
 	&__day {
 		font-size: $font-size-xs;

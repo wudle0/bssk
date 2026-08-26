@@ -28,19 +28,19 @@ $color-tag-bg: #eef1f8;
 $color-tag-text: $color-primary;
 
 // Hero bg (오버레이 색조)
-$color-hero-overlay: rgba(20, 30, 60, 0.45);
+$color-hero-overlay: rgba(0, 0, 0, 0.5);
 
 // Card accent colors — 슬레이트 블루 + 코럴 계열
 $card-0-bg: #fdf0ed;
-$card-0-accent: #d96b52;   // 코럴
+$card-0-accent: #d96b52; // 코럴
 $card-1-bg: #eef1f8;
-$card-1-accent: #2d4270;   // 딥 슬레이트
+$card-1-accent: #2d4270; // 딥 슬레이트
 $card-2-bg: #e8edf6;
-$card-2-accent: #3d5a90;   // 미디엄 슬레이트
+$card-2-accent: #3d5a90; // 미디엄 슬레이트
 $card-3-bg: #edf1fc;
-$card-3-accent: #4a6aaa;   // 라이트 슬레이트 블루
+$card-3-accent: #4a6aaa; // 라이트 슬레이트 블루
 $card-4-bg: #f0f3fa;
-$card-4-accent: #5a7ab8;   // 소프트 슬레이트
+$card-4-accent: #5a7ab8; // 소프트 슬레이트
 
 // Typography
 $font-sans:
